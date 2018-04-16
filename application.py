@@ -16,15 +16,17 @@ session = DBSession()
 #WORKS
 @app.route('/')
 def showMain():
-    return "DJ KHALED"
+    categories = session.query(Category).all()
+    items = session.query(Item).all()
+    return render_template('index.html', categories = categories, items = items)
 
-@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/JSON')
-def restaurantsMenuItemJSON(restaurant_id, menu_id):
-    menu = session.query(MenuItem).filter_by(restaurant_id = restaurant_id).all()
-    for i in menu:
-        if i.restaurant_id == restaurant_id and i.id == menu_id:
-            return jsonify(i.serialize)
-    return "No Item"
+#@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/JSON')
+#def restaurantsMenuItemJSON(restaurant_id, menu_id):
+#    menu = session.query(MenuItem).filter_by(restaurant_id = restaurant_id).all()
+#    for i in menu:
+#        if i.restaurant_id == restaurant_id and i.id == menu_id:
+#            return jsonify(i.serialize)
+#    return "No Item"
 
 if __name__ == '__main__':
     app.debug = True
