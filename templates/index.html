@@ -21,18 +21,17 @@
 	<div class="container">
     <div class="section">
       <!--   Icon Section   -->
-	{% for i in categories %}
-	{% if loop.index == 1 %}	
 	<div class="row">
-	{% endif %}
+	{% for i in categories %}
+		<a href={{url_for('showItems', category_id = i.id) }}>
+			<div class="col s12 m4 card-panel hoverable">
+			  <div class="icon-block">
+				<h5 class="center">{{i.name}}</h5>
 
-		<div class="col s12 m4 card-panel hoverable">
-          <div class="icon-block">
-            <h5 class="center">{{i.name}}</h5>
-
-            <p class="light">{{loop.index}} We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
-          </div>
-    	</div>
+				<p class="light">{{i.description}}</p>
+			  </div>
+			</div>
+		</a>
 	{% if loop.index is divisibleby 3 %}	
 	</div>
 	<div class="row">
@@ -41,6 +40,8 @@
     {% endfor %}
 	</div>
     <br><br>
+	<a href ={{url_for('newCategory')}}><i class="medium material-icons light-blue-text lighten-1">add_circle</i></a>
+
   </div>
 
 {% with messages = get_flashed_messages() %}

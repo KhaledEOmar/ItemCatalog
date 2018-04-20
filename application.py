@@ -185,7 +185,16 @@ def showMain():
         return redirect('/login')
     categories = session.query(Category).all()
     items = session.query(Item).all()
-    return render_template('index.html', categories = categories, items = items)
+    return render_template('index.html', categories = categories)
+
+@app.route('/category/<int:category_id>')
+def showItems(category_id):
+    if 'username' not in login_session:
+        return redirect('/login')
+    category = session.query(Category).filter_by(id = category_id).first()
+    items = session.query(Item).filter_by(category_id = category_id).all()
+    return render_template('items.html', items = items, category = category)
+
 
 #@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/JSON')
 #def restaurantsMenuItemJSON(restaurant_id, menu_id):

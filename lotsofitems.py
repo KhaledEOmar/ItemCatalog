@@ -22,7 +22,7 @@ user1 = User(name="Khaled omar", email="KhaledEomar@gmail.com", picture="x")
 
 
 #Items for Snowboarding
-category1 = Category(name = "Snowboarding")
+category1 = Category(name = "Snowboarding", description = "Sweet snowboarding items")
 
 session.add(category1)
 session.commit()
