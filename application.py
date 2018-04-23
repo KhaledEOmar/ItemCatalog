@@ -195,6 +195,17 @@ def showItems(category_id):
     items = session.query(Item).filter_by(category_id = category_id).all()
     return render_template('items.html', items = items, category = category)
 
+@app.route('/newCategory', methods=['GET','POST'])
+def newCategory():
+    if request.method == 'POST':
+        print request.values.get('categoryName')
+        print request.values.get('Description')
+        category = Category(name = request.values.get('categoryName'), description = request.values.get('Description'))
+        session.add(category)
+        session.commit()
+        return redirect("", code=302)
+    else:
+        return render_template('newCategory.html')
 
 #@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/JSON')
 #def restaurantsMenuItemJSON(restaurant_id, menu_id):
