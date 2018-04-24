@@ -30,7 +30,6 @@ def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
-    # return "The current session state is %s" % login_session['state']
     return render_template('login.html', STATE=state)
 
 
@@ -118,11 +117,8 @@ def gconnect():
     output += '<img src="'
     output += login_session['picture']
     output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
-    flash("you are now logged in as %s" % login_session['username'])
     print "done!"
     return output
-
-    # DISCONNECT - Revoke a current user's token and reset their login_session
 
 
 def createUser(login_session):
@@ -185,7 +181,7 @@ def showMain():
         return redirect('/login')
     categories = session.query(Category).all()
     items = session.query(Item).all()
-    return render_template('index.html', categories = categories)
+    return render_template('index.html', categories = categories, login_session = login_session)
 
 @app.route('/category/<int:category_id>')
 def showItems(category_id):
@@ -198,8 +194,6 @@ def showItems(category_id):
 @app.route('/newCategory', methods=['GET','POST'])
 def newCategory():
     if request.method == 'POST':
-        print request.values.get('categoryName')
-        print request.values.get('Description')
         category = Category(name = request.values.get('categoryName'), description = request.values.get('Description'))
         session.add(category)
         session.commit()
@@ -207,13 +201,19 @@ def newCategory():
     else:
         return render_template('newCategory.html')
 
-#@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/JSON')
-#def restaurantsMenuItemJSON(restaurant_id, menu_id):
-#    menu = session.query(MenuItem).filter_by(restaurant_id = restaurant_id).all()
-#    for i in menu:
-#        if i.restaurant_id == restaurant_id and i.id == menu_id:
-#            return jsonify(i.serialize)
-#    return "No Item"
+@app.route('/category/<int:category_id>/newItem', methods=['GET','POST'])
+def newItem(category_id):
+    if 'username' not in login_session:
+        return redirect('/login')
+    if request.method == 'POST':
+        item = Item(name = request.values.get('itemName'), description = request.values.get('Description'), user_id = getUserID(login_session['email']), category_id = category_id)
+        session.add(item)
+        session.commit()
+        return redirect('/category/%s' % category_id, code=302)
+    else:
+        category = session.query(Category).filter_by(id = category_id).first()
+        return render_template('newItem.html', category = category)
+
 
 if __name__ == '__main__':
     app.debug = True
