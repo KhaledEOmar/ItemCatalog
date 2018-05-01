@@ -1,0 +1,26 @@
+<html>
+	<!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+<body>
+
+<h1>Edit Item: {{item.name}}</h1>
+
+<div>
+
+	<form action = {{url_for('editItem', item_id = item.id)}} method = "POST">
+		<p>Item Name: <input type = "text" name = "ItemName" /></p>
+		<p>Item Description: <input type = "text" name = "description" /></p>
+    	<input type="submit" value="Submit">
+	</form>
+
+</div>
+
+
+	<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+	<script src="{{ url_for('static', filename='init.js') }}"></script>
+</body>
+
+</html>
